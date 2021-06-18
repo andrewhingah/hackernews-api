@@ -7,13 +7,16 @@ async function feed(parent, args, context, info) {
         ],
       }
     : {};
+
   const links = await context.prisma.link.findMany({
     where: condition,
     skip: args.skip,
     take: args.take,
     orderBy: args.orderBy,
   });
-  return links;
+
+  const count = await context.prisma.link.count({ where: condition });
+  return { links, count };
 }
 
 module.exports = {
